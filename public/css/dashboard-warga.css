@@ -1,0 +1,413 @@
+/* ============================================
+   DASHBOARD WARGA - MODERN CLEAN DESIGN
+   ============================================ */
+
+:root {
+    --warga-primary: #2563eb;
+    --warga-primary-dark: #1d4ed8;
+    --warga-secondary: #64748b;
+    --warga-success: #059669;
+    --warga-warning: #d97706;
+    --warga-danger: #dc2626;
+    --warga-bg: #f8fafc;
+    --warga-card: #ffffff;
+    --warga-text: #1e293b;
+    --warga-text-muted: #64748b;
+    --warga-border: #e2e8f0;
+    --warga-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --warga-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --warga-radius: 12px;
+    --warga-radius-lg: 16px;
+}
+
+/* ============================================
+   WELCOME CARD - PERSONAL TOUCH
+   ============================================ */
+.welcome-card {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #0ea5e9 100%);
+    border-radius: var(--warga-radius-lg);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.welcome-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+.welcome-avatar {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.welcome-card:hover .welcome-avatar {
+    transform: scale(1.05) rotate(3deg);
+}
+
+.welcome-text h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.welcome-meta {
+    font-size: 0.8125rem;
+    opacity: 0.9;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.welcome-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+/* ============================================
+   STATUS CARDS - CLEAN & INFORMATIVE
+   ============================================ */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.status-card {
+    background: var(--warga-card);
+    border: 1px solid var(--warga-border);
+    border-radius: var(--warga-radius);
+    padding: 1.25rem;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.status-card:hover {
+    box-shadow: var(--warga-shadow-lg);
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+}
+
+.status-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: var(--warga-radius) 0 0 var(--warga-radius);
+    transition: width 0.3s ease;
+}
+
+.status-card:hover::before {
+    width: 6px;
+}
+
+.status-card.verified::before {
+    background: var(--warga-success);
+}
+
+.status-card.unverified::before {
+    background: var(--warga-warning);
+}
+
+.status-card.secure::before {
+    background: var(--warga-success);
+}
+
+.status-card.insecure::before {
+    background: var(--warga-danger);
+}
+
+.status-card.neutral::before {
+    background: var(--warga-primary);
+}
+
+.status-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.status-card:hover .status-icon {
+    transform: scale(1.1);
+}
+
+.status-icon.success {
+    background: #dcfce7;
+    color: var(--warga-success);
+}
+
+.status-icon.warning {
+    background: #fef3c7;
+    color: var(--warga-warning);
+}
+
+.status-icon.danger {
+    background: #fee2e2;
+    color: var(--warga-danger);
+}
+
+.status-icon.info {
+    background: #dbeafe;
+    color: var(--warga-primary);
+}
+
+.status-content h6 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--warga-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.status-content p {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--warga-text);
+    margin: 0;
+}
+
+.status-content a {
+    font-size: 0.8125rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: gap 0.2s ease;
+}
+
+.status-content a:hover {
+    gap: 0.5rem;
+}
+
+.status-content a.text-success {
+    color: var(--warga-success) !important;
+}
+
+.status-content a.text-warning {
+    color: var(--warga-warning) !important;
+}
+
+.status-content a.text-danger {
+    color: var(--warga-danger) !important;
+}
+
+/* ============================================
+   ACTIVITY CARD - MINIMALIST TABLE
+   ============================================ */
+.activity-card {
+    background: var(--warga-card);
+    border: 1px solid var(--warga-border);
+    border-radius: var(--warga-radius-lg);
+    overflow: hidden;
+}
+
+.activity-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--warga-border);
+    background: linear-gradient(to right, #f8fafc, #ffffff);
+}
+
+.activity-header h6 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--warga-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.activity-header i {
+    color: var(--warga-primary);
+}
+
+.activity-table {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.activity-table thead th {
+    background: #f1f5f9;
+    color: var(--warga-text-muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.875rem 1rem;
+    border: none;
+}
+
+.activity-table thead th:first-child {
+    padding-left: 1.5rem;
+}
+
+.activity-table tbody td {
+    padding: 1rem;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.activity-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.activity-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.activity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: #eff6ff;
+    color: var(--warga-primary);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #dbeafe;
+}
+
+.activity-desc {
+    color: var(--warga-text);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activity-ip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--warga-text-muted);
+    background: #f1f5f9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.activity-time {
+    font-size: 0.8125rem;
+    color: var(--warga-text-muted);
+    white-space: nowrap;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--warga-text-muted);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+    display: block;
+}
+
+.empty-state p {
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-in {
+    animation: slideUp 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .welcome-avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 1.5rem;
+    }
+
+    .welcome-text h5 {
+        font-size: 1.125rem;
+    }
+
+    .welcome-meta {
+        font-size: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-table {
+        font-size: 0.8125rem;
+    }
+
+    .activity-desc {
+        max-width: 150px;
+    }
+
+    .activity-table thead th,
+    .activity-table tbody td {
+        padding: 0.75rem;
+    }
+}

@@ -1,0 +1,556 @@
+/* ============================================
+   SECURITY PAGE - MODERN CLEAN DESIGN
+   ============================================ */
+
+:root {
+    --sec-primary: #2563eb;
+    --sec-primary-dark: #1d4ed8;
+    --sec-success: #059669;
+    --sec-warning: #d97706;
+    --sec-danger: #dc2626;
+    --sec-info: #0ea5e9;
+    --sec-bg: #f8fafc;
+    --sec-card: #ffffff;
+    --sec-text: #1e293b;
+    --sec-text-muted: #64748b;
+    --sec-border: #e2e8f0;
+    --sec-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --sec-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --sec-radius: 12px;
+    --sec-radius-lg: 16px;
+}
+
+/* ============================================
+   SECURITY CARDS
+   ============================================ */
+.security-card {
+    background: var(--sec-card);
+    border: 1px solid var(--sec-border);
+    border-radius: var(--sec-radius-lg);
+    box-shadow: var(--sec-shadow);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.security-card:hover {
+    box-shadow: var(--sec-shadow-lg);
+}
+
+.security-header {
+    background: linear-gradient(to right, #f8fafc, #ffffff);
+    border-bottom: 1px solid var(--sec-border);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.security-header i {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+}
+
+.security-header i.primary {
+    background: #eff6ff;
+    color: var(--sec-primary);
+}
+
+.security-header i.success {
+    background: #dcfce7;
+    color: var(--sec-success);
+}
+
+.security-header i.info {
+    background: #e0f2fe;
+    color: var(--sec-info);
+}
+
+.security-header h6 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--sec-text);
+    margin: 0;
+}
+
+.security-body {
+    padding: 1.5rem;
+}
+
+/* ============================================
+   PASSWORD FORM
+   ============================================ */
+.password-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.password-form label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sec-text);
+    margin-bottom: 0.5rem;
+}
+
+.password-form label i {
+    color: var(--sec-primary);
+}
+
+.input-group-custom {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+}
+
+.input-group-custom .input-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sec-text-muted);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.input-group-custom input {
+    flex: 1;
+    padding: 0.625rem 0.875rem 0.625rem 2.75rem;
+    border: 1.5px solid var(--sec-border);
+    border-radius: var(--sec-radius);
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+    background: #fff;
+}
+
+.input-group-custom input:focus {
+    border-color: var(--sec-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.input-group-custom .toggle-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0 0.875rem;
+    background: transparent;
+    border: none;
+    color: var(--sec-text-muted);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.input-group-custom .toggle-btn:hover {
+    color: var(--sec-primary);
+}
+
+/* Password Strength Meter */
+.strength-meter {
+    margin-top: 0.75rem;
+}
+
+.strength-bar-bg {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-bar.weak { background: var(--sec-danger); width: 20%; }
+.strength-bar.fair { background: var(--sec-warning); width: 40%; }
+.strength-bar.good { background: #f59e0b; width: 60%; }
+.strength-bar.strong { background: #3b82f6; width: 80%; }
+.strength-bar.very-strong { background: var(--sec-success); width: 100%; }
+
+.strength-label {
+    font-size: 0.75rem;
+    margin-top: 0.375rem;
+    font-weight: 500;
+}
+
+.strength-label.weak { color: var(--sec-danger); }
+.strength-label.fair { color: var(--sec-warning); }
+.strength-label.good { color: #f59e0b; }
+.strength-label.strong { color: #3b82f6; }
+.strength-label.very-strong { color: var(--sec-success); }
+
+/* Password Match Indicator */
+.match-indicator {
+    font-size: 0.8125rem;
+    margin-top: 0.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-weight: 500;
+    min-height: 1.25rem;
+}
+
+.match-indicator.match {
+    color: var(--sec-success);
+}
+
+.match-indicator.mismatch {
+    color: var(--sec-danger);
+}
+
+/* Submit Button */
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: var(--sec-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--sec-radius);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: var(--sec-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.3);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   2FA SECTION
+   ============================================ */
+.status-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--sec-radius);
+    margin-bottom: 1.25rem;
+}
+
+.status-banner.success {
+    background: #dcfce7;
+    border: 1px solid #86efac;
+}
+
+.status-banner.warning {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+}
+
+.status-banner i {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.status-banner.success i {
+    color: var(--sec-success);
+}
+
+.status-banner.warning i {
+    color: var(--sec-warning);
+}
+
+.status-banner div {
+    flex: 1;
+}
+
+.status-banner strong {
+    display: block;
+    color: var(--sec-text);
+    margin-bottom: 0.25rem;
+    font-size: 0.9375rem;
+}
+
+.status-banner p {
+    margin: 0;
+    color: var(--sec-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* 2FA Form */
+.twofa-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.twofa-form label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sec-text);
+    margin-bottom: 0.5rem;
+}
+
+.twofa-form input {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1.5px solid var(--sec-border);
+    border-radius: var(--sec-radius);
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+}
+
+.twofa-form input:focus {
+    border-color: var(--sec-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.twofa-form input.is-invalid {
+    border-color: var(--sec-danger);
+}
+
+.twofa-form .invalid-feedback {
+    font-size: 0.8125rem;
+    color: var(--sec-danger);
+    margin-top: 0.375rem;
+}
+
+/* 2FA Buttons */
+.btn-2fa-enable {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: var(--sec-success);
+    color: #fff;
+    border: none;
+    border-radius: var(--sec-radius);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-2fa-enable:hover {
+    background: #047857;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgba(5, 150, 105, 0.3);
+}
+
+.btn-2fa-disable {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    color: var(--sec-danger);
+    border: 1.5px solid var(--sec-danger);
+    border-radius: var(--sec-radius);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-2fa-disable:hover {
+    background: var(--sec-danger);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Info Text */
+.info-text {
+    font-size: 0.875rem;
+    color: var(--sec-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+.info-text strong {
+    color: var(--sec-text);
+}
+
+/* ============================================
+   LOGIN INFO CARD
+   ============================================ */
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem 0;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    color: var(--sec-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-label i {
+    font-size: 1rem;
+    color: var(--sec-info);
+    opacity: 0.7;
+}
+
+.info-value {
+    font-weight: 500;
+    color: var(--sec-text);
+}
+
+.info-value code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8125rem;
+    background: #f1f5f9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: var(--sec-text);
+    border: 1px solid #e2e8f0;
+}
+
+.info-value.highlight {
+    color: var(--sec-primary);
+    font-weight: 700;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.alert-custom {
+    border: none;
+    border-radius: var(--sec-radius);
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.alert-custom.danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-up {
+    animation: slideInUp 0.5s ease-out forwards;
+}
+
+.animate-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.animate-right {
+    animation: slideInRight 0.5s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 991px) {
+    .security-body {
+        padding: 1.25rem;
+    }
+
+    .status-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .status-banner i {
+        align-self: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .security-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .security-body {
+        padding: 1rem;
+    }
+
+    .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .btn-submit,
+    .btn-2fa-enable,
+    .btn-2fa-disable {
+        padding: 0.625rem 1rem;
+    }
+}
