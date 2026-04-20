@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Database\Seeders\BansosSeeder;
+use Database\Seeders\PengaduanSeeder;
+use Database\Seeders\PosyanduSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -75,6 +78,9 @@ class DatabaseSeeder extends Seeder
                 'phone'             => '08123456789',
             ]
         );
+        $this->call(BansosSeeder::class);
+        $this->call(PengaduanSeeder::class);
+        $this->call(PosyanduSeeder::class);
 
         // ── Output info ke terminal ─────────────────────────────────────────
         $this->command->info('');

@@ -735,6 +735,7 @@
             @endif
 
             {{-- ═══════ KONTEN DESA — Admin + Staff Desa ═══════ --}}
+            {{-- Section ini berisi konten publikasi yang dibaca warga --}}
             @if (auth()->user()->canManageContent())
                 <div class="nav-section-label">Konten Desa</div>
                 <a class="sidebar-link {{ request()->routeIs('admin.berita*') ? 'active' : '' }}"
@@ -757,9 +758,29 @@
                     href="{{ route('admin.profil-desa.edit') }}">
                     <i class="bi bi-house-heart-fill"></i> Profil Desa
                 </a>
+
+                {{-- ═══════ LAYANAN & PROGRAM — Admin + Staff Desa ═══════ --}}
+                {{-- Section ini berisi program/layanan nyata yang melibatkan data warga --}}
+                <div class="nav-section-label">Layanan & Program</div>
                 <a class="sidebar-link {{ request()->routeIs('admin.pengaduan*') ? 'active' : '' }}"
                     href="{{ route('admin.pengaduan.index') }}">
-                    <i class="bi bi-megaphone-fill"></i> Pengaduan Warga
+                    <i class="bi bi-chat-dots-fill"></i> Pengaduan Warga
+                </a>
+                <a class="sidebar-link {{ request()->routeIs('admin.bansos.program*') ? 'active' : '' }}"
+                    href="{{ route('admin.bansos.program.index') }}">
+                    <i class="bi bi-grid-fill"></i> Program Bansos
+                </a>
+                <a class="sidebar-link {{ request()->routeIs('admin.bansos.penerima*') ? 'active' : '' }}"
+                    href="{{ route('admin.bansos.penerima.index') }}">
+                    <i class="bi bi-heart-fill"></i> Penerima Bansos
+                </a>
+                <a class="sidebar-link {{ request()->routeIs('admin.posyandu.index') || request()->routeIs('admin.posyandu.create') || request()->routeIs('admin.posyandu.edit') || request()->routeIs('admin.posyandu.store') || request()->routeIs('admin.posyandu.update') || request()->routeIs('admin.posyandu.destroy') ? 'active' : '' }}"
+                    href="{{ route('admin.posyandu.index') }}">
+                    <i class="bi bi-heart-pulse-fill"></i> Kelola Posyandu
+                </a>
+                <a class="sidebar-link {{ request()->routeIs('admin.posyandu.jadwal*') ? 'active' : '' }}"
+                    href="{{ route('admin.posyandu.jadwal.index') }}">
+                    <i class="bi bi-calendar-event-fill"></i> Jadwal Posyandu
                 </a>
             @endif
 

@@ -77,6 +77,12 @@
                         <a class="sid-nav-link" href="{{ route('home') }}#layanan">Layanan</a>
                     </li>
                     <li class="nav-item">
+                        <a class="sid-nav-link {{ request()->routeIs('galeri*') ? 'aktif' : '' }}"
+                            href="{{ route('galeri') }}">
+                            Galeri
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="sid-nav-link {{ request()->routeIs('kontak') ? 'aktif' : '' }}"
                             href="{{ route('kontak') }}">
                             Kontak

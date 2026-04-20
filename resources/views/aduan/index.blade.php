@@ -3,44 +3,11 @@
 
 @push('styles')
     <style>
-        .hero-aduan {
-            background: linear-gradient(135deg, #1e40af 0%, #1a56db 100%);
-            color: white;
-            padding: 3rem 0 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-aduan::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, .08), transparent 70%);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
-        }
-
-        .hero-aduan h1 {
-            font-family: 'Lora', serif;
-            font-weight: 700;
-            font-size: 2.25rem;
-            margin-bottom: .5rem;
-        }
-
-        .hero-aduan .lead {
-            opacity: .9;
-            font-size: 1rem;
-            max-width: 640px;
-        }
-
         .form-aduan-card {
             background: white;
-            border-radius: 1rem;
+            border-radius: 14px;
             padding: 2rem;
-            box-shadow: 0 4px 24px rgba(15, 23, 42, .08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
             margin-top: -2.5rem;
             position: relative;
             z-index: 2;
@@ -49,7 +16,7 @@
         .form-aduan-card h4 {
             font-family: 'Lora', serif;
             font-weight: 700;
-            color: #0f172a;
+            color: #1a1a1a;
             margin-bottom: .25rem;
         }
 
@@ -81,8 +48,8 @@
 
         .form-control-aduan:focus {
             outline: none;
-            border-color: #1a56db;
-            box-shadow: 0 0 0 3px rgba(26, 86, 219, .1);
+            border-color: #2d8659;
+            box-shadow: 0 0 0 3px rgba(45, 134, 89, .12);
         }
 
         .form-control-aduan[disabled] {
@@ -97,7 +64,7 @@
         }
 
         .btn-submit-aduan {
-            background: linear-gradient(135deg, #1a56db, #1e40af);
+            background: #2d8659;
             color: white;
             border: none;
             padding: .85rem 2rem;
@@ -112,8 +79,9 @@
         }
 
         .btn-submit-aduan:hover {
+            background: #1e5f3d;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(26, 86, 219, .3);
+            box-shadow: 0 8px 20px rgba(45, 134, 89, .25);
         }
 
         .alert-kode-tiket {
@@ -145,23 +113,35 @@
 
         .lacak-card {
             background: white;
-            border-radius: 1rem;
+            border-radius: 14px;
             padding: 1.75rem;
-            box-shadow: 0 1px 6px rgba(15, 23, 42, .05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+            transition: box-shadow .3s;
+        }
+
+        .lacak-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .12);
+        }
+
+        .lacak-card h5 {
+            font-family: 'Lora', serif;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: .4rem;
         }
 
         .info-card {
-            background: #f0f9ff;
-            border-left: 4px solid #0ea5e9;
+            background: rgba(45, 134, 89, .07);
+            border-left: 4px solid #2d8659;
             border-radius: .5rem;
             padding: 1rem 1.25rem;
             font-size: .85rem;
-            color: #075985;
+            color: #1e5f3d;
             margin-bottom: 1.5rem;
         }
 
         .info-card strong {
-            color: #0c4a6e;
+            color: #1a1a1a;
         }
 
         .history-item {
@@ -180,8 +160,8 @@
             width: 36px;
             height: 36px;
             border-radius: .5rem;
-            background: #d1fae5;
-            color: #065f46;
+            background: rgba(45, 134, 89, .12);
+            color: #2d8659;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -192,7 +172,7 @@
         .history-title {
             font-weight: 600;
             font-size: .88rem;
-            color: #0f172a;
+            color: #1a1a1a;
         }
 
         .history-meta {
@@ -219,18 +199,18 @@
         }
 
         .cat-icon-option:hover {
-            border-color: #1a56db;
-            background: #eff6ff;
+            border-color: #2d8659;
+            background: rgba(45, 134, 89, .06);
         }
 
         .cat-icon-option.active {
-            border-color: #1a56db;
-            background: #dbeafe;
+            border-color: #2d8659;
+            background: rgba(45, 134, 89, .10);
         }
 
         .cat-icon-option i {
             font-size: 1.25rem;
-            color: #1a56db;
+            color: #2d8659;
             display: block;
             margin-bottom: .25rem;
         }
@@ -245,17 +225,30 @@
 
 @section('content')
 
-    <div class="hero-aduan">
-        <div class="container" style="position:relative;z-index:1;">
-            <h1><i class="bi bi-megaphone-fill me-2"></i>Pengaduan Warga</h1>
-            <p class="lead">Sampaikan aspirasi, keluhan, atau saran Anda kepada pemerintah desa. Setiap aduan akan
-                ditanggapi dengan serius.</p>
+    {{-- ── HERO ─────────────────────────────────────────────────────────────────── --}}
+    <section class="sid-hero">
+        <div class="container">
+            <div class="sid-hero-inner text-center">
+                <span class="sid-hero-badge">
+                    <i class="bi bi-megaphone-fill me-1"></i>
+                    Layanan Aspirasi
+                </span>
+                <h1 class="sid-hero-title">
+                    Pengaduan <em>Warga</em>
+                </h1>
+                <p class="sid-hero-lead">
+                    Sampaikan aspirasi, keluhan, atau saran Anda kepada pemerintah desa.
+                    Setiap aduan akan ditanggapi dengan serius.
+                </p>
+            </div>
         </div>
-    </div>
+    </section>
 
+    {{-- ── KONTEN ───────────────────────────────────────────────────────────────── --}}
     <div class="container" style="margin-bottom: 3rem;">
         <div class="row g-4">
-            {{-- ═══════ KOLOM KIRI: FORM PENGADUAN ═══════ --}}
+
+            {{-- ═══ KOLOM KIRI: FORM PENGADUAN ═══ --}}
             <div class="col-lg-8">
                 <div class="form-aduan-card">
 
@@ -289,7 +282,7 @@
                     </div>
 
                     <div class="info-card">
-                        <i class="bi bi-info-circle-fill me-1"></i>
+                        <i class="bi bi-shield-fill-check me-1"></i>
                         <strong>Privasi Anda Aman:</strong> Data pribadi Anda hanya digunakan untuk keperluan tindak lanjut
                         aduan dan tidak dipublikasikan.
                     </div>
@@ -297,7 +290,7 @@
                     <form method="POST" action="{{ route('aduan.store') }}" enctype="multipart/form-data">
                         @csrf
 
-                        {{-- ── Kategori ── --}}
+                        {{-- Kategori --}}
                         <div class="mb-4">
                             <label class="form-label-aduan">Kategori Pengaduan <span class="required">*</span></label>
                             <div class="cat-icon-grid" id="catGrid">
@@ -324,7 +317,7 @@
                             </div>
                         </div>
 
-                        {{-- ── Identitas ── --}}
+                        {{-- Identitas --}}
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label-aduan">Nama Lengkap <span class="required">*</span></label>
@@ -358,7 +351,7 @@
                             </div>
                         </div>
 
-                        {{-- ── Isi Aduan ── --}}
+                        {{-- Isi Aduan --}}
                         <div class="mb-3">
                             <label class="form-label-aduan">Judul Aduan <span class="required">*</span></label>
                             <input type="text" name="judul" class="form-control-aduan" value="{{ old('judul') }}"
@@ -393,13 +386,13 @@
                 </div>
             </div>
 
-            {{-- ═══════ KOLOM KANAN: LACAK + TRANSPARANSI ═══════ --}}
+            {{-- ═══ KOLOM KANAN: LACAK + TRANSPARANSI ═══ --}}
             <div class="col-lg-4">
 
                 {{-- Lacak Status --}}
                 <div class="lacak-card mb-4">
-                    <h5 style="font-family:'Lora',serif;font-weight:700;color:#0f172a;">
-                        <i class="bi bi-search" style="color:#1a56db;"></i> Lacak Pengaduan
+                    <h5>
+                        <i class="bi bi-search me-1" style="color:#2d8659;"></i> Lacak Pengaduan
                     </h5>
                     <p style="font-size:.82rem;color:#64748b;margin-bottom:1rem;">
                         Sudah pernah kirim aduan? Cek status tindak lanjutnya di sini.
@@ -411,16 +404,16 @@
                                 placeholder="Contoh: PGD-20260419-A3F7" required>
                         </div>
                         <button type="submit" class="btn-submit-aduan" style="width:100%;justify-content:center;">
-                            <i class="bi bi-arrow-right"></i> Lacak
+                            <i class="bi bi-arrow-right-circle"></i> Lacak
                         </button>
                     </form>
                 </div>
 
-                {{-- Transparansi - 10 Pengaduan Selesai --}}
+                {{-- Transparansi: 10 Pengaduan Selesai --}}
                 @if ($pengaduanSelesai->count() > 0)
                     <div class="lacak-card">
-                        <h5 style="font-family:'Lora',serif;font-weight:700;color:#0f172a;">
-                            <i class="bi bi-check-circle-fill" style="color:#10b981;"></i> Telah Ditangani
+                        <h5>
+                            <i class="bi bi-check-circle-fill me-1" style="color:#2d8659;"></i> Telah Ditangani
                         </h5>
                         <p style="font-size:.8rem;color:#64748b;margin-bottom:1rem;">
                             Pengaduan yang telah selesai ditindaklanjuti.
@@ -441,6 +434,7 @@
                         @endforeach
                     </div>
                 @endif
+
             </div>
         </div>
     </div>
@@ -449,7 +443,6 @@
 
 @push('scripts')
     <script>
-        // Visual feedback untuk pilihan kategori
         document.querySelectorAll('.cat-icon-option').forEach(function(el) {
             el.addEventListener('click', function() {
                 document.querySelectorAll('.cat-icon-option').forEach(function(e) {

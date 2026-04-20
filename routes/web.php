@@ -1,7 +1,7 @@
 <?php
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PengaduanController;
-
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{
@@ -27,36 +27,37 @@ use App\Http\Controllers\Admin\{
     PengaduanController as AdminPengaduanController,
     WilayahController,
     ExportController,
-    ProfilDesaController
+    ProfilDesaController,
+    BansosController,
+    PosyanduController,
 };
 
 // ────────────────────────────────────────────────────────────────────────────
 // PUBLIC — No auth required
 // ────────────────────────────────────────────────────────────────────────────
 Route::middleware(['web', 'blocked.ip'])->group(function () {
-     // ── Halaman Publik ───────────────────────────────────────────────────────
-    Route::get('/',             [HomeController::class, 'index'])->name('home');
-    Route::get('/berita',       [HomeController::class, 'berita'])->name('berita');
-    Route::get('/berita/{berita:slug}', [HomeController::class, 'beritaDetail'])->name('berita.detail');
-    Route::get('/pengumuman',   [HomeController::class, 'pengumuman'])->name('pengumuman');
-    Route::get('/profil',       [HomeController::class, 'profil'])->name('profil');
-    Route::get('/galeri',       fn() => view('galeri.index'))->name('galeri');
-    Route::get('/kontak',       fn() => view('kontak'))->name('kontak');
-    Route::get('/apbdes',       fn() => view('apbdes'))->name('apbdes');
-    Route::get('/aduan',        [PengaduanController::class, 'index'])->name('aduan');
-    Route::post('/aduan',       [PengaduanController::class, 'store'])->name('aduan.store');
-    Route::get('/aduan/lacak',  [PengaduanController::class, 'lacak'])->name('aduan.lacak');
 
-    // ── Layanan Publik ───────────────────────────────────────────────────────
-    Route::prefix('layanan')->name('layanan.')->group(function () {
-        Route::get('/',         fn() => view('layanan.index'))->name('index');
-        Route::get('/domisili', fn() => view('layanan.domisili'))->name('domisili');
-        Route::get('/kk',       fn() => view('layanan.kk'))->name('kk');
-        Route::get('/usaha',    fn() => view('layanan.usaha'))->name('usaha');
-        Route::get('/beasiswa', fn() => view('layanan.beasiswa'))->name('beasiswa');
-        Route::get('/posyandu', fn() => view('layanan.posyandu'))->name('posyandu');
-        Route::get('/bansos',   fn() => view('layanan.bansos'))->name('bansos');
-    });
+    // ── Halaman Publik ───────────────────────────────────────────────────────
+    Route::get('/',                     [HomeController::class, 'index'])->name('home');
+    Route::get('/berita',               [HomeController::class, 'berita'])->name('berita');
+    Route::get('/berita/{berita:slug}', [HomeController::class, 'beritaDetail'])->name('berita.detail');
+    Route::get('/pengumuman',           [HomeController::class, 'pengumuman'])->name('pengumuman');
+    Route::get('/profil',               [HomeController::class, 'profil'])->name('profil');
+    Route::get('/galeri',               [HomeController::class, 'galeri'])->name('galeri');
+    Route::get('/kontak',               fn() => view('kontak'))->name('kontak');
+    Route::get('/apbdes',               fn() => view('apbdes'))->name('apbdes');
+    Route::get('/posyandu',             [PosyanduController::class, 'public'])->name('posyandu');
+
+    // ── Aduan ────────────────────────────────────────────────────────────────
+    Route::get('/aduan',                [PengaduanController::class, 'index'])->name('aduan');
+    Route::post('/aduan',               [PengaduanController::class, 'store'])->name('aduan.store');
+    Route::get('/aduan/lacak',          [PengaduanController::class, 'lacak'])->name('aduan.lacak');
+
+    // ── Bansos (halaman publik + cek status) ────────────────────────────────
+    Route::get('/bansos',               [BansosController::class, 'public'])->name('bansos');
+    Route::post('/bansos/cek',          [BansosController::class, 'cekStatus'])
+         ->middleware('throttle:5,1')
+         ->name('bansos.cek');
 
     // ── Auth Routes ──────────────────────────────────────────────────────────
     Route::middleware('guest')->group(function () {
@@ -64,7 +65,7 @@ Route::middleware(['web', 'blocked.ip'])->group(function () {
         // Login
         Route::get('/login',  [LoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [LoginController::class, 'login'])
-            ->middleware('throttle:10,1'); // extra rate limit via Laravel
+            ->middleware('throttle:10,1');
 
         // Register
         Route::get('/register',  [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -77,19 +78,19 @@ Route::middleware(['web', 'blocked.ip'])->group(function () {
     });
 
     // ── Email Verification ───────────────────────────────────────────────────
-    Route::get('/email/verify',              [VerifyEmailController::class, 'notice'])->name('verification.notice');
-    Route::get('/email/verify/otp',          [VerifyEmailController::class, 'showOtpForm'])->name('verification.otp');
-    Route::post('/email/verify/otp',         [VerifyEmailController::class, 'verifyOtp'])->name('verification.otp.verify')->middleware('throttle:10,1');
-    Route::post('/email/verify/resend',      [VerifyEmailController::class, 'resend'])->name('verification.resend')->middleware('throttle:3,1');
+    Route::get('/email/verify',         [VerifyEmailController::class, 'notice'])->name('verification.notice');
+    Route::get('/email/verify/otp',     [VerifyEmailController::class, 'showOtpForm'])->name('verification.otp');
+    Route::post('/email/verify/otp',    [VerifyEmailController::class, 'verifyOtp'])->name('verification.otp.verify')->middleware('throttle:10,1');
+    Route::post('/email/verify/resend', [VerifyEmailController::class, 'resend'])->name('verification.resend')->middleware('throttle:3,1');
 
     // ── Two-Factor Challenge (user in 2FA limbo — not fully logged in) ───────
-    Route::get('/two-factor/challenge',  [TwoFactorController::class, 'challenge'])->name('two-factor.challenge');
-    Route::post('/two-factor/verify',    [TwoFactorController::class, 'verify'])->name('two-factor.verify')->middleware('throttle:10,1');
-    Route::post('/two-factor/resend',    [TwoFactorController::class, 'resend'])->name('two-factor.resend')->middleware('throttle:3,1');
+    Route::get('/two-factor/challenge', [TwoFactorController::class, 'challenge'])->name('two-factor.challenge');
+    Route::post('/two-factor/verify',   [TwoFactorController::class, 'verify'])->name('two-factor.verify')->middleware('throttle:10,1');
+    Route::post('/two-factor/resend',   [TwoFactorController::class, 'resend'])->name('two-factor.resend')->middleware('throttle:3,1');
 
     // ── Password Reset (built-in Laravel) ────────────────────────────────────
-    Route::get('/forgot-password',  fn() => view('auth.forgot-password'))->name('password.request');
-    Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetController::class, 'sendResetLink'])->name('password.email')->middleware('throttle:5,1');
+    Route::get('/forgot-password',        fn() => view('auth.forgot-password'))->name('password.request');
+    Route::post('/forgot-password',       [\App\Http\Controllers\Auth\PasswordResetController::class, 'sendResetLink'])->name('password.email')->middleware('throttle:5,1');
     Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\PasswordResetController::class, 'showResetForm'])->name('password.reset');
     Route::post('/reset-password',        [\App\Http\Controllers\Auth\PasswordResetController::class, 'resetPassword'])->name('password.update')->middleware('throttle:5,1');
 });
@@ -109,31 +110,30 @@ Route::middleware(['auth', 'verified', 'active', 'session.timeout:30', 'log.acti
     })->name('session.extend');
 
     // ── Dashboards (role-specific) ───────────────────────────────────────────
-    // ── Dashboards (role-specific) ───────────────────────────────────────────
     Route::get('/dashboard/admin',  [DashboardController::class, 'admin'])->name('dashboard.admin')->middleware('role:admin');
     Route::get('/dashboard/staff',  [DashboardController::class, 'staff'])->name('dashboard.staff')->middleware('role:admin,staff_desa');
     Route::get('/dashboard/rw',     [DashboardController::class, 'rw'])->name('dashboard.rw')->middleware('role:admin,rw');
     Route::get('/dashboard/rt',     [DashboardController::class, 'rt'])->name('dashboard.rt')->middleware('role:admin,rw,rt');
     Route::get('/dashboard',        [DashboardController::class, 'warga'])->name('dashboard.warga');
 
-    // ── Profile ───────────────────────────────────────────────────────────────
+    // ── Profile ──────────────────────────────────────────────────────────────
     Route::get('/profile',          [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile',          [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/security', [ProfileController::class, 'security'])->name('profile.security');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 
-    // ── Two-Factor Management (from profile) ──────────────────────────────────
-    Route::post('/two-factor/enable',     [TwoFactorController::class, 'enable'])->name('two-factor.enable');
-    Route::delete('/two-factor/disable',  [TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    // ── Two-Factor Management (from profile) ─────────────────────────────────
+    Route::post('/two-factor/enable',    [TwoFactorController::class, 'enable'])->name('two-factor.enable');
+    Route::delete('/two-factor/disable', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
 
-    // ── Notifications (semua user login) ───────────────────────────────────────
+    // ── Notifications (semua user login) ─────────────────────────────────────
     Route::prefix('notifications')->name('notifications.')->group(function () {
-        Route::get('/',              [NotificationController::class, 'index'])->name('index');
-        Route::get('/dropdown',      [NotificationController::class, 'dropdown'])->name('dropdown');
-        Route::get('/{id}',          [NotificationController::class, 'show'])->name('show');
-        Route::post('/read-all',     [NotificationController::class, 'markAllAsRead'])->name('read-all');
-        Route::delete('/{id}',       [NotificationController::class, 'destroy'])->name('destroy');
-        Route::delete('/',           [NotificationController::class, 'destroyAll'])->name('destroy-all');
+        Route::get('/',          [NotificationController::class, 'index'])->name('index');
+        Route::get('/dropdown',  [NotificationController::class, 'dropdown'])->name('dropdown');
+        Route::get('/{id}',      [NotificationController::class, 'show'])->name('show');
+        Route::post('/read-all', [NotificationController::class, 'markAllAsRead'])->name('read-all');
+        Route::delete('/{id}',   [NotificationController::class, 'destroy'])->name('destroy');
+        Route::delete('/',       [NotificationController::class, 'destroyAll'])->name('destroy-all');
     });
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -177,15 +177,53 @@ Route::middleware(['auth', 'verified', 'active', 'session.timeout:30', 'log.acti
                 ->parameters(['struktur-desa' => 'strukturDesa'])
                 ->except(['show']);
 
+            // Kelola Bansos
+            Route::prefix('bansos')->name('bansos.')->group(function () {
+                // Program
+                Route::get('program',                  [BansosController::class, 'programIndex'])->name('program.index');
+                Route::get('program/tambah',           [BansosController::class, 'programCreate'])->name('program.create');
+                Route::post('program',                 [BansosController::class, 'programStore'])->name('program.store');
+                Route::get('program/{program}/edit',   [BansosController::class, 'programEdit'])->name('program.edit');
+                Route::put('program/{program}',        [BansosController::class, 'programUpdate'])->name('program.update');
+                Route::delete('program/{program}',     [BansosController::class, 'programDestroy'])->name('program.destroy');
+
+                // Penerima
+                Route::get('penerima',                 [BansosController::class, 'penerimaIndex'])->name('penerima.index');
+                Route::get('penerima/tambah',          [BansosController::class, 'penerimaCreate'])->name('penerima.create');
+                Route::post('penerima',                [BansosController::class, 'penerimaStore'])->name('penerima.store');
+                Route::get('penerima/{penerima}/edit', [BansosController::class, 'penerimaEdit'])->name('penerima.edit');
+                Route::put('penerima/{penerima}',      [BansosController::class, 'penerimaUpdate'])->name('penerima.update');
+                Route::delete('penerima/{penerima}',   [BansosController::class, 'penerimaDestroy'])->name('penerima.destroy');
+            });
+
+            // Kelola Posyandu
+            Route::prefix('posyandu')->name('posyandu.')->group(function () {
+                // Master posyandu
+                Route::get('/',                      [PosyanduController::class, 'index'])->name('index');
+                Route::get('/tambah',                [PosyanduController::class, 'create'])->name('create');
+                Route::post('/',                     [PosyanduController::class, 'store'])->name('store');
+                Route::get('/{posyandu}/edit',       [PosyanduController::class, 'edit'])->name('edit');
+                Route::put('/{posyandu}',            [PosyanduController::class, 'update'])->name('update');
+                Route::delete('/{posyandu}',         [PosyanduController::class, 'destroy'])->name('destroy');
+
+                // Jadwal
+                Route::get('/jadwal',                [PosyanduController::class, 'jadwalIndex'])->name('jadwal.index');
+                Route::get('/jadwal/tambah',         [PosyanduController::class, 'jadwalCreate'])->name('jadwal.create');
+                Route::post('/jadwal',               [PosyanduController::class, 'jadwalStore'])->name('jadwal.store');
+                Route::get('/jadwal/{jadwal}/edit',  [PosyanduController::class, 'jadwalEdit'])->name('jadwal.edit');
+                Route::put('/jadwal/{jadwal}',       [PosyanduController::class, 'jadwalUpdate'])->name('jadwal.update');
+                Route::delete('/jadwal/{jadwal}',    [PosyanduController::class, 'jadwalDestroy'])->name('jadwal.destroy');
+            });
+
             // Kelola Profil Desa (single row, edit only)
-            Route::get('profil-desa',  [ProfilDesaController::class, 'edit'])->name('profil-desa.edit');
-            Route::put('profil-desa',  [ProfilDesaController::class, 'update'])->name('profil-desa.update');
+            Route::get('profil-desa', [ProfilDesaController::class, 'edit'])->name('profil-desa.edit');
+            Route::put('profil-desa', [ProfilDesaController::class, 'update'])->name('profil-desa.update');
 
             // Kelola Pengaduan Warga
-            Route::get('pengaduan',                     [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
-            Route::get('pengaduan/{pengaduan}',         [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
-            Route::put('pengaduan/{pengaduan}',         [AdminPengaduanController::class, 'update'])->name('pengaduan.update');
-            Route::delete('pengaduan/{pengaduan}',      [AdminPengaduanController::class, 'destroy'])->name('pengaduan.destroy');
+            Route::get('pengaduan',                [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
+            Route::get('pengaduan/{pengaduan}',    [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
+            Route::put('pengaduan/{pengaduan}',    [AdminPengaduanController::class, 'update'])->name('pengaduan.update');
+            Route::delete('pengaduan/{pengaduan}', [AdminPengaduanController::class, 'destroy'])->name('pengaduan.destroy');
 
             // Export Pengaduan
             Route::get('export/pengaduan/excel', [ExportController::class, 'pengaduanExcel'])->name('export.pengaduan.excel');

@@ -9,6 +9,8 @@ use App\Models\StrukturDesa;
 use App\Models\Galeri;
 use App\Models\ProfilDesa;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Models\BansosProgram;
 
 class HomeController extends Controller
 {
@@ -125,5 +127,47 @@ class HomeController extends Controller
         ];
 
         return view('profil', compact('profil', 'strukturDesa', 'statistik'));
+    }
+     public function galeri(Request $request): View
+    {
+        // Ticker pengumuman (dipakai layout public.blade.php)
+        $pengumumanTicker = \App\Models\Pengumuman::where('status', 'aktif')
+            ->where(function ($q) {
+                $q->whereNull('berlaku_hingga')
+                  ->orWhere('berlaku_hingga', '>=', now());
+            })
+            ->latest()
+            ->take(10)
+            ->get();
+
+        // Query dasar: hanya yang published
+        $query = \App\Models\Galeri::where('status', 'published');
+
+        // Filter pencarian judul
+        if ($request->filled('cari')) {
+            $query->where('judul', 'like', '%' . $request->cari . '%');
+        }
+
+        // Urutan
+        match ($request->input('urut', 'terbaru')) {
+            'terlama' => $query->oldest(),
+            'az'      => $query->orderBy('judul'),
+            'za'      => $query->orderByDesc('judul'),
+            default   => $query->latest(),   // 'terbaru'
+        };
+
+        $total  = \App\Models\Galeri::where('status', 'published')->count();
+        $galeri = $query->paginate(12)->withQueryString();
+
+        return view('galeri.index', compact('galeri', 'total', 'pengumumanTicker'));
+    }
+    public function bansos(): View
+    {
+        $programs = BansosProgram::aktif()
+                        ->withCount('penerimaAktif')
+                        ->orderBy('nama')
+                        ->get();
+
+        return view('bansos', compact('programs'));
     }
 }

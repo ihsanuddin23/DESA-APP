@@ -73,55 +73,24 @@
         <div class="container">
             <div class="sid-section-header">
                 <h2 class="sid-section-title">Layanan <span>Online</span></h2>
-                <a href="{{ route('layanan.index') }}" class="sid-lihat-semua">
-                    Semua layanan <i class="bi bi-arrow-right"></i>
-                </a>
             </div>
 
             <div class="row g-3">
                 @php
                     $layanan = [
                         [
-                            'ikon' => 'bi-file-earmark-text-fill',
-                            'warna' => '#E8F5EE',
-                            'judul' => 'Surat Domisili',
-                            'deskripsi' => 'Keterangan tempat tinggal resmi',
-                            'route' => 'layanan.domisili',
-                        ],
-                        [
-                            'ikon' => 'bi-people-fill',
-                            'warna' => '#FEF9E7',
-                            'judul' => 'Kartu Keluarga',
-                            'deskripsi' => 'Pengajuan & perubahan data KK',
-                            'route' => 'layanan.kk',
-                        ],
-                        [
-                            'ikon' => 'bi-shop-window',
-                            'warna' => '#FDECEA',
-                            'judul' => 'Surat Usaha',
-                            'deskripsi' => 'Izin usaha mikro kecil warga',
-                            'route' => 'layanan.usaha',
-                        ],
-                        [
-                            'ikon' => 'bi-mortarboard-fill',
-                            'warna' => '#EAF3DE',
-                            'judul' => 'Beasiswa Desa',
-                            'deskripsi' => 'Pendaftaran program beasiswa',
-                            'route' => 'layanan.beasiswa',
-                        ],
-                        [
                             'ikon' => 'bi-heart-pulse-fill',
                             'warna' => '#E6F1FB',
                             'judul' => 'Posyandu',
                             'deskripsi' => 'Jadwal & pendaftaran posyandu',
-                            'route' => 'layanan.posyandu',
+                            'route' => 'posyandu',
                         ],
                         [
                             'ikon' => 'bi-cash-coin',
                             'warna' => '#EEEDFE',
                             'judul' => 'Bantuan Sosial',
                             'deskripsi' => 'Cek status & daftar bansos',
-                            'route' => 'layanan.bansos',
+                            'route' => 'bansos',
                         ],
                         [
                             'ikon' => 'bi-bar-chart-fill',

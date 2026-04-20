@@ -73,8 +73,13 @@
                         <input type="password" class="input-desa @error('password') is-invalid @enderror" id="password"
                             name="password" placeholder="Masukkan password Anda" required autocomplete="current-password"
                             maxlength="255">
-                        <button type="button" class="toggle-password" data-toggle-password="password"
-                            title="Tampilkan password">
+                        {{--
+                            FIX: Gunakan onclick inline + fungsi global togglePassword()
+                            Ini cara paling robust — tidak bergantung pada timing DOMContentLoaded
+                            atau event listener dari file JS eksternal.
+                        --}}
+                        <button type="button" class="toggle-password" onclick="togglePassword('password', this)"
+                            title="Tampilkan password" aria-label="Tampilkan password">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
@@ -93,7 +98,8 @@
                     </label>
                     <div class="captcha-row">
                         <div class="captcha-box" id="captchaQuestion">{{ $captcha['question'] ?? '1 + 1 = ?' }}</div>
-                        <button type="button" class="btn-refresh" id="refreshCaptcha" title="Ganti soal">
+                        <button type="button" class="btn-refresh" id="refreshCaptcha" title="Ganti soal"
+                            aria-label="Ganti soal captcha">
                             <i class="bi bi-arrow-clockwise"></i>
                         </button>
                         <div class="captcha-input-wrapper">
@@ -142,5 +148,39 @@
 @endsection
 
 @push('scripts')
+    {{--
+        FIX: Fungsi togglePassword didefinisikan sebagai fungsi global di sini,
+        SEBELUM auth.js di-load. Dengan begitu onclick="togglePassword(...)" di
+        blade bisa langsung memanggil fungsi ini tanpa menunggu DOMContentLoaded.
+    --}}
+    <script>
+        /**
+         * Toggle visibility password
+         * @param {string} inputId - ID dari input password
+         * @param {HTMLElement} btn - Tombol yang diklik
+         */
+        function togglePassword(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (!input) return;
+
+            var icon = btn.querySelector('i');
+            if (!icon) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+                btn.title = 'Sembunyikan password';
+                btn.setAttribute('aria-label', 'Sembunyikan password');
+            } else {
+                input.type = 'password';
+                icon.className = 'bi bi-eye';
+                btn.title = 'Tampilkan password';
+                btn.setAttribute('aria-label', 'Tampilkan password');
+            }
+
+            input.focus();
+        }
+    </script>
+
     <script src="{{ asset('js/auth.js') }}"></script>
 @endpush

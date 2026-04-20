@@ -130,14 +130,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Could auto-focus to submit button or validate
             }
         });
+    }
 
-        // Focus email on load if empty, otherwise password
-        const emailInput = document.getElementById('email');
-        if (emailInput && !emailInput.value) {
-            emailInput.focus();
-        } else if (document.getElementById('password')) {
-            document.getElementById('password').focus();
-        }
+    // FIX: Focus logic dipindah ke luar blok if (captchaInput)
+    // agar berfungsi di semua halaman (login maupun register)
+    const emailInput = document.getElementById('email');
+    if (emailInput && !emailInput.value) {
+        emailInput.focus();
+    } else if (document.getElementById('password')) {
+        document.getElementById('password').focus();
     }
 
     // Add ripple effect to submit button

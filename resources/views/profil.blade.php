@@ -4,51 +4,17 @@
 
 @push('styles')
     <style>
-        .profil-hero {
-            background: linear-gradient(135deg, #2d8659 0%, #1e5f3d 100%);
-            color: white;
-            padding: 4rem 0 5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profil-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 255, 255, .06), transparent 70%);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
-        }
-
-        .profil-hero h1 {
-            font-family: 'Lora', serif;
-            font-weight: 700;
-            font-size: 2.5rem;
-            margin-bottom: .75rem;
-        }
-
-        .profil-hero .lead {
-            opacity: .92;
-            font-size: 1.05rem;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .profil-hero .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .5rem;
-            background: rgba(255, 255, 255, .15);
-            padding: .5rem 1rem;
-            border-radius: 99px;
-            font-size: .82rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(8px);
+        /* ── Reuse variabel warna SID ───────────────────────────────────────────── */
+        :root {
+            --sid-green: #2d8659;
+            --sid-green-dark: #1e5f3d;
+            --sid-text: #1a1a1a;
+            --sid-muted: #64748b;
+            --sid-surface: #f8fafc;
+            --sid-border: #f1f5f9;
+            --sid-shadow-sm: 0 2px 10px rgba(0, 0, 0, .06);
+            --sid-shadow-md: 0 8px 25px rgba(0, 0, 0, .12);
+            --sid-radius: 14px;
         }
 
         .logo-profil {
@@ -62,202 +28,152 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
         }
 
+        /* ── Section wrapper — identik dengan .sid-section ──────────────────────── */
         .section-profil {
             padding: 3.5rem 0;
             background: white;
         }
 
         .section-profil.alt {
-            background: #f8fafc;
+            background: var(--sid-surface);
         }
 
+        /* ── Section heading — identik dengan pola di halaman lain ─────────────── */
         .section-title {
             font-family: 'Lora', serif;
             font-weight: 700;
             font-size: 2rem;
-            color: #0f172a;
+            color: var(--sid-text);
             margin-bottom: .4rem;
             text-align: center;
         }
 
         .section-title em {
-            color: #2d8659;
+            color: var(--sid-green);
             font-style: normal;
         }
 
         .section-sub {
-            color: #64748b;
+            color: var(--sid-muted);
             font-size: 1rem;
             text-align: center;
             margin-bottom: 2.5rem;
         }
 
-        .visi-card,
-        .misi-card,
-        .info-card {
+        /* ── Card generik — sama dengan sid-berita-card / sid-pengumuman-card ───── */
+        .profil-card {
             background: white;
-            border-radius: 1rem;
+            border-radius: var(--sid-radius);
             padding: 2rem;
-            box-shadow: 0 1px 10px rgba(15, 23, 42, .05);
+            box-shadow: var(--sid-shadow-sm);
             height: 100%;
-            border-left: 4px solid #2d8659;
+            border-left: 4px solid var(--sid-green);
+            transition: transform .3s, box-shadow .3s;
         }
 
-        .visi-card .icon-header,
-        .misi-card .icon-header,
-        .info-card .icon-header {
+        .profil-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--sid-shadow-md);
+        }
+
+        .profil-card .card-icon-header {
             display: flex;
             align-items: center;
             gap: .75rem;
             margin-bottom: 1.25rem;
         }
 
-        .visi-card .icon-header i,
-        .misi-card .icon-header i,
-        .info-card .icon-header i {
+        .profil-card .card-icon-header i {
             font-size: 1.75rem;
-            color: #2d8659;
+            color: var(--sid-green);
         }
 
-        .visi-card h3,
-        .misi-card h3,
-        .info-card h3 {
+        .profil-card h3 {
             font-family: 'Lora', serif;
             font-weight: 700;
-            color: #0f172a;
-            font-size: 1.35rem;
+            color: var(--sid-text);
+            font-size: 1.25rem;
             margin: 0;
         }
 
-        .visi-card .content,
-        .misi-card .content,
-        .info-card .content {
+        .profil-card .card-body-text {
             color: #475569;
             line-height: 1.85;
             font-size: .95rem;
             white-space: pre-line;
         }
 
+        /* ── Statistik — sama hover dengan sid-berita-card ──────────────────────── */
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
         }
 
         .stat-box {
             background: white;
-            border-radius: .85rem;
+            border-radius: var(--sid-radius);
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 1px 6px rgba(15, 23, 42, .05);
-            transition: transform .2s, box-shadow .2s;
+            box-shadow: var(--sid-shadow-sm);
+            transition: transform .3s, box-shadow .3s;
         }
 
         .stat-box:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(45, 134, 89, .15);
+            box-shadow: var(--sid-shadow-md);
         }
 
         .stat-box i {
             font-size: 2rem;
-            color: #2d8659;
+            color: var(--sid-green);
             margin-bottom: .5rem;
         }
 
         .stat-box .stat-value {
             font-size: 2rem;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--sid-text);
             font-family: 'JetBrains Mono', monospace;
             line-height: 1;
         }
 
         .stat-box .stat-label {
-            font-size: .8rem;
-            color: #64748b;
+            font-size: .78rem;
+            color: var(--sid-muted);
             margin-top: .4rem;
             text-transform: uppercase;
             letter-spacing: .05em;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        .kantor-wrap {
-            background: white;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, .08);
-        }
-
-        .kantor-foto {
-            width: 100%;
-            height: 360px;
-            object-fit: cover;
-        }
-
-        .kantor-info {
-            padding: 2rem;
-        }
-
-        .kantor-info h3 {
-            font-family: 'Lora', serif;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 1rem;
-        }
-
-        .info-row {
-            display: flex;
-            gap: 1rem;
-            padding: .7rem 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-row i {
-            font-size: 1.1rem;
-            color: #2d8659;
-            flex-shrink: 0;
-            width: 20px;
-        }
-
-        .info-row .info-text {
-            color: #334155;
-            font-size: .92rem;
-            line-height: 1.5;
-        }
-
-        .info-row .info-text strong {
-            color: #0f172a;
-        }
-
+        /* ── Struktur pemerintahan ───────────────────────────────────────────────── */
         .struktur-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
             gap: 1.25rem;
         }
 
         .struktur-card {
             background: white;
-            border-radius: .85rem;
+            border-radius: var(--sid-radius);
             padding: 1.5rem 1.25rem;
             text-align: center;
-            box-shadow: 0 1px 6px rgba(15, 23, 42, .05);
-            transition: transform .2s;
+            box-shadow: var(--sid-shadow-sm);
+            transition: transform .3s, box-shadow .3s;
         }
 
         .struktur-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
+            box-shadow: var(--sid-shadow-md);
         }
 
         .struktur-avatar {
             width: 96px;
             height: 96px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2d8659, #1e5f3d);
+            background: linear-gradient(135deg, var(--sid-green), var(--sid-green-dark));
             color: white;
             display: flex;
             align-items: center;
@@ -276,16 +192,23 @@
 
         .struktur-card h5 {
             font-weight: 700;
-            color: #0f172a;
+            color: var(--sid-text);
             font-size: 1rem;
             margin-bottom: .2rem;
         }
 
+        /* badge jabatan — sama dengan sid-badge di pengumuman */
         .struktur-card .jabatan {
-            color: #2d8659;
-            font-size: .82rem;
-            font-weight: 500;
+            display: inline-block;
+            background: rgba(45, 134, 89, .12);
+            color: var(--sid-green);
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 3px 11px;
+            border-radius: 99px;
             margin-bottom: .5rem;
+            text-transform: uppercase;
+            letter-spacing: .04em;
         }
 
         .struktur-card .kontak {
@@ -293,37 +216,104 @@
             color: #94a3b8;
         }
 
-        .sejarah-content {
+        /* ── Kantor & kontak ─────────────────────────────────────────────────────── */
+        .kantor-wrap {
+            background: white;
+            border-radius: var(--sid-radius);
+            overflow: hidden;
+            box-shadow: var(--sid-shadow-sm);
+            transition: box-shadow .3s;
+        }
+
+        .kantor-wrap:hover {
+            box-shadow: var(--sid-shadow-md);
+        }
+
+        .kantor-foto {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+        }
+
+        .kantor-info {
+            padding: 2rem;
+        }
+
+        .kantor-info h3 {
+            font-family: 'Lora', serif;
+            font-weight: 700;
+            color: var(--sid-text);
+            margin-bottom: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 1rem;
+            padding: .7rem 0;
+            border-bottom: 1px solid var(--sid-border);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row i {
+            font-size: 1.1rem;
+            color: var(--sid-green);
+            flex-shrink: 0;
+            width: 20px;
+            margin-top: 2px;
+        }
+
+        .info-row .info-text {
             color: #334155;
-            line-height: 1.95;
-            font-size: 1rem;
-            white-space: pre-line;
+            font-size: .92rem;
+            line-height: 1.5;
+        }
+
+        .info-row .info-text strong {
+            color: var(--sid-text);
+        }
+
+        .info-row .info-text a {
+            color: var(--sid-green);
+            text-decoration: none;
+        }
+
+        .info-row .info-text a:hover {
+            text-decoration: underline;
         }
     </style>
 @endpush
 
 @section('content')
 
-    {{-- ═══════ HERO ═══════ --}}
-    <section class="profil-hero">
-        <div class="container" style="position:relative;z-index:1;text-align:center;">
-            @if ($profil->logo)
-                <img src="{{ Storage::url($profil->logo) }}" class="logo-profil" alt="Logo {{ $profil->nama_desa }}">
-            @endif
+    {{-- ══ HERO ════════════════════════════════════════════════════════════════════ --}}
+    <section class="sid-hero">
+        <div class="container">
+            <div class="sid-hero-inner text-center">
+                @if ($profil->logo)
+                    <img src="{{ Storage::url($profil->logo) }}" class="logo-profil" alt="Logo {{ $profil->nama_desa }}">
+                @endif
 
-            <div class="hero-badge">
-                <i class="bi bi-info-circle-fill"></i>
-                Mengenal Lebih Dekat
+                <span class="sid-hero-badge">
+                    <i class="bi bi-info-circle-fill me-1"></i>
+                    Mengenal Lebih Dekat
+                </span>
+
+                <h1 class="sid-hero-title">
+                    Profil <em>Desa</em>
+                </h1>
+
+                <p class="sid-hero-lead">
+                    Sejarah, visi misi, dan gambaran umum wilayah
+                    {{ $profil->nama_desa }}{{ $profil->kepala_desa ? ' di bawah kepemimpinan ' . $profil->kepala_desa : '' }}.
+                </p>
             </div>
-            <h1>Profil {{ $profil->nama_desa }}</h1>
-            <p class="lead">
-                Sejarah, visi misi, dan gambaran umum wilayah
-                {{ $profil->nama_desa }}{{ $profil->kepala_desa ? ' di bawah kepemimpinan ' . $profil->kepala_desa : '' }}.
-            </p>
         </div>
     </section>
 
-    {{-- ═══════ VISI & MISI ═══════ --}}
+    {{-- ══ VISI & MISI ═════════════════════════════════════════════════════════════ --}}
     <section class="section-profil">
         <div class="container">
             <h2 class="section-title">Visi &amp; <em>Misi</em></h2>
@@ -331,28 +321,28 @@
 
             <div class="row g-4">
                 <div class="col-md-6">
-                    <div class="visi-card">
-                        <div class="icon-header">
+                    <div class="profil-card">
+                        <div class="card-icon-header">
                             <i class="bi bi-eye-fill"></i>
                             <h3>Visi</h3>
                         </div>
-                        <div class="content">{{ $profil->visi ?? 'Visi belum diisi.' }}</div>
+                        <div class="card-body-text">{{ $profil->visi ?? 'Visi belum diisi.' }}</div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="misi-card">
-                        <div class="icon-header">
+                    <div class="profil-card">
+                        <div class="card-icon-header">
                             <i class="bi bi-bullseye"></i>
                             <h3>Misi</h3>
                         </div>
-                        <div class="content">{{ $profil->misi ?? 'Misi belum diisi.' }}</div>
+                        <div class="card-body-text">{{ $profil->misi ?? 'Misi belum diisi.' }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- ═══════ SEJARAH ═══════ --}}
+    {{-- ══ SEJARAH ══════════════════════════════════════════════════════════════════ --}}
     @if ($profil->sejarah)
         <section class="section-profil alt">
             <div class="container">
@@ -361,12 +351,12 @@
 
                 <div class="row justify-content-center">
                     <div class="col-lg-10">
-                        <div class="info-card">
-                            <div class="icon-header">
+                        <div class="profil-card">
+                            <div class="card-icon-header">
                                 <i class="bi bi-book-fill"></i>
                                 <h3>Asal Usul &amp; Perkembangan</h3>
                             </div>
-                            <div class="sejarah-content">{{ $profil->sejarah }}</div>
+                            <div class="card-body-text">{{ $profil->sejarah }}</div>
                         </div>
                     </div>
                 </div>
@@ -374,7 +364,7 @@
         </section>
     @endif
 
-    {{-- ═══════ STATISTIK WILAYAH ═══════ --}}
+    {{-- ══ STATISTIK WILAYAH ════════════════════════════════════════════════════════ --}}
     <section class="section-profil">
         <div class="container">
             <h2 class="section-title"><em>Data</em> Wilayah &amp; Penduduk</h2>
@@ -433,30 +423,33 @@
         </div>
     </section>
 
-    {{-- ═══════ GEOGRAFIS & DEMOGRAFI ═══════ --}}
+    {{-- ══ GEOGRAFIS & DEMOGRAFI ════════════════════════════════════════════════════ --}}
     @if ($profil->geografis || $profil->demografi)
         <section class="section-profil alt">
             <div class="container">
+                <h2 class="section-title">Kondisi <em>Wilayah</em></h2>
+                <p class="section-sub">Geografi dan demografi {{ $profil->nama_desa }}</p>
+
                 <div class="row g-4">
                     @if ($profil->geografis)
-                        <div class="col-lg-6">
-                            <div class="info-card">
-                                <div class="icon-header">
+                        <div class="{{ $profil->demografi ? 'col-lg-6' : 'col-12' }}">
+                            <div class="profil-card">
+                                <div class="card-icon-header">
                                     <i class="bi bi-geo-alt-fill"></i>
                                     <h3>Kondisi Geografis</h3>
                                 </div>
-                                <div class="sejarah-content">{{ $profil->geografis }}</div>
+                                <div class="card-body-text">{{ $profil->geografis }}</div>
                             </div>
                         </div>
                     @endif
                     @if ($profil->demografi)
-                        <div class="col-lg-6">
-                            <div class="info-card">
-                                <div class="icon-header">
+                        <div class="{{ $profil->geografis ? 'col-lg-6' : 'col-12' }}">
+                            <div class="profil-card">
+                                <div class="card-icon-header">
                                     <i class="bi bi-diagram-3-fill"></i>
                                     <h3>Gambaran Demografi</h3>
                                 </div>
-                                <div class="sejarah-content">{{ $profil->demografi }}</div>
+                                <div class="card-body-text">{{ $profil->demografi }}</div>
                             </div>
                         </div>
                     @endif
@@ -465,7 +458,7 @@
         </section>
     @endif
 
-    {{-- ═══════ STRUKTUR PEMERINTAHAN ═══════ --}}
+    {{-- ══ STRUKTUR PEMERINTAHAN ════════════════════════════════════════════════════ --}}
     @if ($strukturDesa->count() > 0)
         <section class="section-profil">
             <div class="container">
@@ -496,7 +489,7 @@
         </section>
     @endif
 
-    {{-- ═══════ KANTOR & KONTAK ═══════ --}}
+    {{-- ══ KANTOR & KONTAK ══════════════════════════════════════════════════════════ --}}
     <section class="section-profil alt">
         <div class="container">
             <h2 class="section-title"><em>Kantor</em> Desa &amp; Kontak</h2>
@@ -533,7 +526,7 @@
                             <i class="bi bi-envelope-fill"></i>
                             <div class="info-text">
                                 <strong>Email:</strong>
-                                <a href="mailto:{{ $profil->email }}" style="color:#2d8659;">{{ $profil->email }}</a>
+                                <a href="mailto:{{ $profil->email }}">{{ $profil->email }}</a>
                             </div>
                         </div>
                     @endif
