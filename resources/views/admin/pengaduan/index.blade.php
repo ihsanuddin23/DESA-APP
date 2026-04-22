@@ -337,7 +337,7 @@
             <div class="pagination-wrap">
                 <span style="font-size:.78rem;color:#94a3b8;">Menampilkan
                     {{ $pengaduan->firstItem() }}–{{ $pengaduan->lastItem() }} dari {{ $pengaduan->total() }}</span>
-                {{ $pengaduan->links() }}
+                {{ $pengaduan->links('vendor.pagination.custom') }}
             </div>
         @endif
     </div>

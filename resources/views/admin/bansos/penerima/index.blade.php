@@ -167,7 +167,7 @@
                 style="padding:.85rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
                 <span style="font-size:.78rem;color:#94a3b8;">Menampilkan
                     {{ $penerima->firstItem() }}–{{ $penerima->lastItem() }} dari {{ $penerima->total() }}</span>
-                {{ $penerima->links() }}
+                {{ $penerima->links('vendor.pagination.custom') }}
             </div>
         @endif
     </div>

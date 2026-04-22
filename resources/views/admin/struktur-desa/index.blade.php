@@ -135,7 +135,7 @@
                 <span style="font-size:.78rem;color:#94a3b8;">Menampilkan
                     {{ $strukturDesa->firstItem() }}–{{ $strukturDesa->lastItem() }} dari
                     {{ $strukturDesa->total() }}</span>
-                {{ $strukturDesa->links() }}
+                {{ $strukturDesa->links('vendor.pagination.custom') }}
             </div>
         @endif
     </div>

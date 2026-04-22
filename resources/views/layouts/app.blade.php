@@ -782,6 +782,15 @@
                     href="{{ route('admin.posyandu.jadwal.index') }}">
                     <i class="bi bi-calendar-event-fill"></i> Jadwal Posyandu
                 </a>
+                {{-- Di dalam section "Layanan & Program", setelah Jadwal Posyandu (sekitar baris 784) --}}
+                <a class="sidebar-link {{ request()->routeIs('admin.apbdes*') ? 'active' : '' }}"
+                    href="{{ route('admin.apbdes.index') }}">
+                    <i class="bi bi-wallet2"></i> Kelola APBDes
+                </a>
+                <a class="sidebar-link {{ request()->routeIs('admin.agenda*') ? 'active' : '' }}"
+                    href="{{ route('admin.agenda.index') }}">
+                    <i class="bi bi-calendar-event-fill"></i> Kelola Agenda
+                </a>
             @endif
 
             {{-- ═══════ DATA WARGA — Admin + Staff Desa + RW + RT ═══════ --}}

@@ -30,6 +30,8 @@ use App\Http\Controllers\Admin\{
     ProfilDesaController,
     BansosController,
     PosyanduController,
+    ApbdesController,
+    AgendaController,
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -45,8 +47,14 @@ Route::middleware(['web', 'blocked.ip'])->group(function () {
     Route::get('/profil',               [HomeController::class, 'profil'])->name('profil');
     Route::get('/galeri',               [HomeController::class, 'galeri'])->name('galeri');
     Route::get('/kontak',               fn() => view('kontak'))->name('kontak');
-    Route::get('/apbdes',               fn() => view('apbdes'))->name('apbdes');
     Route::get('/posyandu',             [PosyanduController::class, 'public'])->name('posyandu');
+
+    // ── APBDes (Halaman Publik - Dinamis) ────────────────────────────────────
+    Route::get('/apbdes',               [ApbdesController::class, 'public'])->name('apbdes');
+
+    // ── Agenda / Kegiatan Desa (Halaman Publik) ──────────────────────────────
+    Route::get('/agenda',               [AgendaController::class, 'public'])->name('agenda');
+    Route::get('/agenda/{agenda:slug}', [AgendaController::class, 'publicDetail'])->name('agenda.detail');
 
     // ── Aduan ────────────────────────────────────────────────────────────────
     Route::get('/aduan',                [PengaduanController::class, 'index'])->name('aduan');
@@ -194,6 +202,43 @@ Route::middleware(['auth', 'verified', 'active', 'session.timeout:30', 'log.acti
                 Route::get('penerima/{penerima}/edit', [BansosController::class, 'penerimaEdit'])->name('penerima.edit');
                 Route::put('penerima/{penerima}',      [BansosController::class, 'penerimaUpdate'])->name('penerima.update');
                 Route::delete('penerima/{penerima}',   [BansosController::class, 'penerimaDestroy'])->name('penerima.destroy');
+            });
+
+            // ══════════════════════════════════════════════════════════════════
+            // Kelola APBDes
+            // ══════════════════════════════════════════════════════════════════
+            Route::prefix('apbdes')->name('apbdes.')->group(function () {
+                // Master APBDes (per tahun)
+                Route::get('/',                 [ApbdesController::class, 'index'])->name('index');
+                Route::get('/tambah',           [ApbdesController::class, 'create'])->name('create');
+                Route::post('/',                [ApbdesController::class, 'store'])->name('store');
+                Route::get('/{apbdes}',         [ApbdesController::class, 'show'])->name('show');
+                Route::get('/{apbdes}/edit',    [ApbdesController::class, 'edit'])->name('edit');
+                Route::put('/{apbdes}',         [ApbdesController::class, 'update'])->name('update');
+                Route::delete('/{apbdes}',      [ApbdesController::class, 'destroy'])->name('destroy');
+
+                // Item APBDes (pendapatan, belanja, pembiayaan)
+                Route::prefix('{apbdes}/items')->name('items.')->group(function () {
+                    Route::get('/',             [ApbdesController::class, 'itemIndex'])->name('index');
+                    Route::get('/tambah',       [ApbdesController::class, 'itemCreate'])->name('create');
+                    Route::post('/',            [ApbdesController::class, 'itemStore'])->name('store');
+                    Route::get('/{item}/edit',  [ApbdesController::class, 'itemEdit'])->name('edit');
+                    Route::put('/{item}',       [ApbdesController::class, 'itemUpdate'])->name('update');
+                    Route::delete('/{item}',    [ApbdesController::class, 'itemDestroy'])->name('destroy');
+                });
+            });
+
+            // ══════════════════════════════════════════════════════════════════
+            // Kelola Agenda / Kegiatan Desa
+            // ══════════════════════════════════════════════════════════════════
+            Route::prefix('agenda')->name('agenda.')->group(function () {
+                Route::get('/',                 [AgendaController::class, 'index'])->name('index');
+                Route::get('/tambah',           [AgendaController::class, 'create'])->name('create');
+                Route::post('/',                [AgendaController::class, 'store'])->name('store');
+                Route::get('/{agenda}',         [AgendaController::class, 'show'])->name('show');
+                Route::get('/{agenda}/edit',    [AgendaController::class, 'edit'])->name('edit');
+                Route::put('/{agenda}',         [AgendaController::class, 'update'])->name('update');
+                Route::delete('/{agenda}',      [AgendaController::class, 'destroy'])->name('destroy');
             });
 
             // Kelola Posyandu

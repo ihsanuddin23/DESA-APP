@@ -8,13 +8,15 @@ use App\Models\Penduduk;
 use App\Models\StrukturDesa;
 use App\Models\Galeri;
 use App\Models\ProfilDesa;
+use App\Models\BansosProgram;
+use App\Models\Agenda;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-use App\Models\BansosProgram;
+
 
 class HomeController extends Controller
 {
-    public function index(): View
+public function index(): View
     {
         // Statistik kependudukan
         $statistik = [
@@ -62,6 +64,15 @@ class HomeController extends Controller
                     ->take(5)
                     ->get();
 
+        // ═══════════════════════════════════════════════════════════════════
+        // Agenda mendatang (TAMBAHAN BARU)
+        // ═══════════════════════════════════════════════════════════════════
+        $agendaMendatang = Agenda::where('status', 'publikasi')
+                            ->where('tanggal_mulai', '>=', now()->toDateString())
+                            ->orderBy('tanggal_mulai')
+                            ->take(5)
+                            ->get();
+
         return view('home', compact(
             'statistik',
             'beritaUtama',
@@ -69,6 +80,7 @@ class HomeController extends Controller
             'pengumuman',
             'strukturDesa',
             'galeri',
+            'agendaMendatang', // <-- Tambah variabel
         ));
     }
 

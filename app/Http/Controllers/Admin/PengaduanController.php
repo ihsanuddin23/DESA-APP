@@ -33,8 +33,9 @@ class PengaduanController extends Controller
             });
         }
 
+        // ✅ PERUBAHAN: Ubah dari 15 menjadi 5 (maksimal 5 per halaman)
         $pengaduan = $query->latest()
-            ->paginate(15)
+            ->paginate(5) // <--- INI YANG DIUBAH
             ->withQueryString();
 
         // Stats ringkas

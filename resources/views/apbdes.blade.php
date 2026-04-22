@@ -1,276 +1,380 @@
 @extends('layouts.public')
 
-@section('title', 'APBDes')
+@section('title', 'APBDes ' . $tahun)
+
+@push('styles')
+    <style>
+        .apbdes-summary-card {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .apbdes-summary-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .apbdes-summary-card .label {
+            font-size: .85rem;
+            color: #64748b;
+            margin-bottom: .25rem;
+        }
+
+        .apbdes-summary-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .apbdes-section {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .apbdes-section-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .apbdes-section-header h5 {
+            margin: 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .apbdes-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .apbdes-table th {
+            background: #f8fafc;
+            padding: .75rem 1rem;
+            font-size: .75rem;
+            text-transform: uppercase;
+            color: #64748b;
+            font-weight: 600;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .apbdes-table td {
+            padding: .75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: .9rem;
+        }
+
+        .apbdes-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .progress-slim {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-slim-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+    </style>
+@endpush
 
 @section('content')
 
-    {{-- ── HERO SECTION ─────────────────────────────────────────────────────────── --}}
+    {{-- Hero Section --}}
     <section class="sid-hero">
         <div class="container">
             <div class="sid-hero-inner text-center">
                 <span class="sid-hero-badge">
-                    <i class="bi bi-bar-chart-fill me-1"></i>
+                    <i class="bi bi-wallet2 me-1"></i>
                     Transparansi Anggaran
                 </span>
                 <h1 class="sid-hero-title">
-                    APBDes <em>{{ date('Y') }}</em>
+                    APBDes <em>{{ $tahun }}</em>
                 </h1>
                 <p class="sid-hero-lead">
-                    Anggaran Pendapatan dan Belanja Desa {{ config('sid.nama_desa') }}
-                    tahun {{ date('Y') }} — transparan dan akuntabel untuk warga.
+                    Anggaran Pendapatan dan Belanja Desa {{ config('sid.nama_desa') }} Tahun {{ $tahun }}.
+                    Keterbukaan informasi untuk mewujudkan tata kelola desa yang transparan dan akuntabel.
                 </p>
+
+                {{-- Pilih Tahun --}}
+                @if ($tahunList->count() > 1)
+                    <form method="GET" class="mt-4 d-inline-block">
+                        <select name="tahun" class="form-select form-select-sm d-inline-block w-auto"
+                            onchange="this.form.submit()">
+                            @foreach ($tahunList as $thn)
+                                <option value="{{ $thn }}" {{ $tahun == $thn ? 'selected' : '' }}>Tahun
+                                    {{ $thn }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                @endif
             </div>
         </div>
     </section>
 
-    {{-- ── RINGKASAN APBDES ─────────────────────────────────────────────────────── --}}
-    <section class="sid-section sid-section-putih">
-        <div class="container">
-            <div class="sid-section-header">
-                <h2 class="sid-section-title">Ringkasan <span>Anggaran</span></h2>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="sid-data-card" style="background: linear-gradient(135deg, #2d8659, #1e6b44); color: white;">
-                        <i class="bi bi-wallet2" style="font-size: 2.5rem; opacity: 0.8;"></i>
-                        <div class="sid-data-label mt-3" style="color: rgba(255,255,255,0.9);">Total Pendapatan</div>
-                        <div class="sid-data-num" style="color: white;">Rp 2,8 M</div>
-                        <div class="sid-data-sub" style="color: rgba(255,255,255,0.8);">Pagu anggaran {{ date('Y') }}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="sid-data-card" style="background: linear-gradient(135deg, #d97706, #b45309); color: white;">
-                        <i class="bi bi-cash-stack" style="font-size: 2.5rem; opacity: 0.8;"></i>
-                        <div class="sid-data-label mt-3" style="color: rgba(255,255,255,0.9);">Total Belanja</div>
-                        <div class="sid-data-num" style="color: white;">Rp 2,6 M</div>
-                        <div class="sid-data-sub" style="color: rgba(255,255,255,0.8);">Realisasi hingga Q1
-                            {{ date('Y') }}</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="sid-data-card" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white;">
-                        <i class="bi bi-piggy-bank-fill" style="font-size: 2.5rem; opacity: 0.8;"></i>
-                        <div class="sid-data-label mt-3" style="color: rgba(255,255,255,0.9);">SILPA</div>
-                        <div class="sid-data-num" style="color: white;">Rp 200 Jt</div>
-                        <div class="sid-data-sub" style="color: rgba(255,255,255,0.8);">Sisa Lebih Perhitungan Anggaran
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- ── SUMBER PENDAPATAN ────────────────────────────────────────────────────── --}}
-    <section class="sid-section">
-        <div class="container">
-            <div class="sid-section-header">
-                <h2 class="sid-section-title">Sumber <span>Pendapatan</span></h2>
-            </div>
-
-            <div class="sid-data-card">
-                <div class="row g-3">
-                    @php
-                        $pendapatan = [
-                            [
-                                'label' => 'Dana Desa (APBN)',
-                                'nominal' => 'Rp 1.200.000.000',
-                                'pct' => 43,
-                                'warna' => '#2d8659',
-                            ],
-                            [
-                                'label' => 'Alokasi Dana Desa (APBD Kab.)',
-                                'nominal' => 'Rp    850.000.000',
-                                'pct' => 30,
-                                'warna' => '#d97706',
-                            ],
-                            [
-                                'label' => 'Bagi Hasil Pajak & Retribusi',
-                                'nominal' => 'Rp    350.000.000',
-                                'pct' => 13,
-                                'warna' => '#2563eb',
-                            ],
-                            [
-                                'label' => 'Pendapatan Asli Desa (PADes)',
-                                'nominal' => 'Rp    250.000.000',
-                                'pct' => 9,
-                                'warna' => '#dc2626',
-                            ],
-                            [
-                                'label' => 'Bantuan Provinsi',
-                                'nominal' => 'Rp    100.000.000',
-                                'pct' => 4,
-                                'warna' => '#7c3aed',
-                            ],
-                            [
-                                'label' => 'Lain-lain Pendapatan yang Sah',
-                                'nominal' => 'Rp     50.000.000',
-                                'pct' => 1,
-                                'warna' => '#0891b2',
-                            ],
-                        ];
-                    @endphp
-
-                    @foreach ($pendapatan as $item)
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="fw-semibold">{{ $item['label'] }}</span>
-                                <span class="fw-bold">{{ $item['nominal'] }}</span>
+    @if ($apbdes)
+        {{-- Summary Cards --}}
+        <section class="sid-section sid-section-putih">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="apbdes-summary-card">
+                            <div class="icon" style="background:#dcfce7;color:#166534;">
+                                <i class="bi bi-arrow-down-circle"></i>
                             </div>
-                            <div class="sid-data-bar-bg" style="height: 24px;">
-                                <div
-                                    style="width: {{ $item['pct'] }}%; height: 100%; background: {{ $item['warna'] }}; border-radius: 99px; display: flex; align-items: center; padding-left: 10px; color: white; font-size: 0.8rem; font-weight: 600;">
-                                    {{ $item['pct'] }}%
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- ── ALOKASI BELANJA ──────────────────────────────────────────────────────── --}}
-    <section class="sid-section sid-section-putih">
-        <div class="container">
-            <div class="sid-section-header">
-                <h2 class="sid-section-title">Alokasi <span>Belanja</span></h2>
-            </div>
-
-            <div class="row g-3">
-                @php
-                    $belanja = [
-                        [
-                            'icon' => 'bi-hammer',
-                            'warna' => '#E8F5EE',
-                            'color' => '#2d8659',
-                            'label' => 'Pembangunan Desa',
-                            'nominal' => 'Rp 1,2 M',
-                            'desc' => 'Infrastruktur, jalan, drainase',
-                        ],
-                        [
-                            'icon' => 'bi-people-fill',
-                            'warna' => '#FEF9E7',
-                            'color' => '#d97706',
-                            'label' => 'Pembinaan Masyarakat',
-                            'nominal' => 'Rp 450 Jt',
-                            'desc' => 'PKK, Karang Taruna, Posyandu',
-                        ],
-                        [
-                            'icon' => 'bi-buildings',
-                            'warna' => '#E6F1FB',
-                            'color' => '#2563eb',
-                            'label' => 'Penyelenggaraan Pemerintahan',
-                            'nominal' => 'Rp 520 Jt',
-                            'desc' => 'Operasional kantor & perangkat',
-                        ],
-                        [
-                            'icon' => 'bi-shield-fill-check',
-                            'warna' => '#FDECEA',
-                            'color' => '#dc2626',
-                            'label' => 'Pemberdayaan Masyarakat',
-                            'nominal' => 'Rp 300 Jt',
-                            'desc' => 'Pelatihan, UMKM, pertanian',
-                        ],
-                        [
-                            'icon' => 'bi-heart-pulse-fill',
-                            'warna' => '#EEEDFE',
-                            'color' => '#7c3aed',
-                            'label' => 'Penanggulangan Bencana',
-                            'nominal' => 'Rp 130 Jt',
-                            'desc' => 'Darurat & keadaan mendesak',
-                        ],
-                        [
-                            'icon' => 'bi-cash-coin',
-                            'warna' => '#EAF3DE',
-                            'color' => '#65a30d',
-                            'label' => 'Bantuan Sosial',
-                            'nominal' => 'Rp 200 Jt',
-                            'desc' => 'BLT-Desa & bansos lainnya',
-                        ],
-                    ];
-                @endphp
-
-                @foreach ($belanja as $item)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="sid-layanan-card h-100">
-                            <div class="sid-layanan-icon" style="background: {{ $item['warna'] }};">
-                                <i class="bi {{ $item['icon'] }}" style="color: {{ $item['color'] }};"></i>
-                            </div>
-                            <h3 class="sid-layanan-judul">{{ $item['label'] }}</h3>
-                            <p class="sid-layanan-desc">{{ $item['desc'] }}</p>
-                            <div class="fw-bold fs-5 mt-2" style="color: {{ $item['color'] }};">
-                                {{ $item['nominal'] }}
-                            </div>
+                            <div class="label">Total Pendapatan</div>
+                            <div class="value" style="color:#166534;">Rp
+                                {{ number_format($apbdes->total_pendapatan, 0, ',', '.') }}</div>
                         </div>
                     </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- ── INFO TAMBAHAN ────────────────────────────────────────────────────────── --}}
-    <section class="sid-section">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="sid-data-card h-100">
-                        <h5 class="fw-bold mb-3">
-                            <i class="bi bi-info-circle-fill text-primary me-2"></i>
-                            Tentang APBDes
-                        </h5>
-                        <p class="text-muted" style="line-height: 1.9;">
-                            Anggaran Pendapatan dan Belanja Desa (APBDes) adalah rencana keuangan tahunan
-                            pemerintahan desa yang disusun dan dibahas bersama Badan Permusyawaratan Desa (BPD)
-                            dan disepakati dalam musyawarah desa.
-                        </p>
-                        <p class="text-muted" style="line-height: 1.9;">
-                            APBDes menjadi wujud nyata transparansi pengelolaan keuangan desa yang dapat
-                            diakses oleh seluruh warga sebagai bentuk akuntabilitas pemerintah desa.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="sid-data-card h-100"
-                        style="background: linear-gradient(135deg, #2d8659, #1e6b44); color: white;">
-                        <h5 class="fw-bold mb-3">
-                            <i class="bi bi-file-earmark-pdf-fill me-2"></i>
-                            Dokumen Lengkap
-                        </h5>
-                        <p style="line-height: 1.9; opacity: 0.9;">
-                            Untuk informasi detail mengenai APBDes tahun {{ date('Y') }} termasuk
-                            rincian kegiatan dan laporan realisasi per triwulan, silakan menghubungi
-                            Kantor Desa atau unduh dokumen resmi di bawah ini.
-                        </p>
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            <button class="btn btn-light" disabled>
-                                <i class="bi bi-download me-2"></i>Unduh APBDes {{ date('Y') }} (PDF)
-                            </button>
+                    <div class="col-md-3">
+                        <div class="apbdes-summary-card">
+                            <div class="icon" style="background:#fee2e2;color:#dc2626;">
+                                <i class="bi bi-arrow-up-circle"></i>
+                            </div>
+                            <div class="label">Total Belanja</div>
+                            <div class="value" style="color:#dc2626;">Rp
+                                {{ number_format($apbdes->total_belanja, 0, ',', '.') }}</div>
                         </div>
-                        <small class="d-block mt-3" style="opacity: 0.8;">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Fitur unduh dokumen dalam tahap pengembangan.
-                        </small>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="apbdes-summary-card">
+                            <div class="icon" style="background:#dbeafe;color:#2563eb;">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </div>
+                            <div class="label">Pembiayaan</div>
+                            <div class="value" style="color:#2563eb;">Rp
+                                {{ number_format($apbdes->total_pembiayaan, 0, ',', '.') }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="apbdes-summary-card">
+                            <div class="icon"
+                                style="background:{{ $apbdes->sisa_anggaran >= 0 ? '#dcfce7' : '#fee2e2' }};color:{{ $apbdes->sisa_anggaran >= 0 ? '#166534' : '#dc2626' }};">
+                                <i class="bi bi-calculator"></i>
+                            </div>
+                            <div class="label">Sisa Anggaran</div>
+                            <div class="value" style="color:{{ $apbdes->sisa_anggaran >= 0 ? '#166534' : '#dc2626' }};">Rp
+                                {{ number_format($apbdes->sisa_anggaran, 0, ',', '.') }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    {{-- ── DISCLAIMER ───────────────────────────────────────────────────────────── --}}
-    <section class="sid-section sid-section-putih">
-        <div class="container">
-            <div class="sid-data-card text-center" style="max-width: 800px; margin: 0 auto;">
-                <i class="bi bi-shield-exclamation fs-1 text-warning"></i>
-                <h5 class="fw-bold mt-3">Catatan Penting</h5>
-                <p class="text-muted mb-0">
-                    Data yang ditampilkan di halaman ini merupakan <strong>data contoh</strong>
-                    untuk keperluan demonstrasi sistem. Nominal dan alokasi anggaran yang sebenarnya
-                    akan diperbarui setelah pengesahan APBDes resmi oleh pemerintah desa.
-                </p>
+        {{-- Detail Sections --}}
+        <section class="sid-section" style="background:#f8fafc;">
+            <div class="container">
+
+                {{-- Pendapatan --}}
+                <div class="apbdes-section">
+                    <div class="apbdes-section-header" style="background:#f0fdf4;">
+                        <h5 style="color:#166534;"><i class="bi bi-arrow-down-circle"></i> Pendapatan</h5>
+                        <span style="color:#166534;font-weight:700;">Rp
+                            {{ number_format($apbdes->total_pendapatan, 0, ',', '.') }}</span>
+                    </div>
+                    <table class="apbdes-table">
+                        <thead>
+                            <tr>
+                                <th style="width:120px;">Kode</th>
+                                <th>Uraian</th>
+                                <th style="width:180px;">Anggaran</th>
+                                <th style="width:180px;">Realisasi</th>
+                                <th style="width:100px;">Capaian</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($apbdes->pendapatan as $item)
+                                <tr>
+                                    <td><code
+                                            style="background:#e0e7ff;color:#3730a3;padding:2px 6px;border-radius:4px;font-size:.8rem;">{{ $item->kode_rekening ?: '-' }}</code>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:500;">{{ $item->uraian }}</div>
+                                        @if ($item->kategori)
+                                            <div style="font-size:.75rem;color:#64748b;">{{ $item->kategori }}</div>
+                                        @endif
+                                    </td>
+                                    <td style="font-weight:600;color:#166534;">Rp
+                                        {{ number_format($item->anggaran, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format($item->realisasi, 0, ',', '.') }}</td>
+                                    <td>
+                                        <div class="progress-slim mb-1">
+                                            <div class="progress-slim-bar"
+                                                style="width:{{ min($item->persentase_realisasi, 100) }}%;background:#166534;">
+                                            </div>
+                                        </div>
+                                        <span
+                                            style="font-size:.75rem;color:#64748b;">{{ $item->persentase_realisasi }}%</span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data pendapatan</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Belanja --}}
+                <div class="apbdes-section">
+                    <div class="apbdes-section-header" style="background:#fef2f2;">
+                        <h5 style="color:#dc2626;"><i class="bi bi-arrow-up-circle"></i> Belanja</h5>
+                        <span style="color:#dc2626;font-weight:700;">Rp
+                            {{ number_format($apbdes->total_belanja, 0, ',', '.') }}</span>
+                    </div>
+                    <table class="apbdes-table">
+                        <thead>
+                            <tr>
+                                <th style="width:120px;">Kode</th>
+                                <th>Uraian</th>
+                                <th style="width:180px;">Anggaran</th>
+                                <th style="width:180px;">Realisasi</th>
+                                <th style="width:100px;">Capaian</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($apbdes->belanja as $item)
+                                <tr>
+                                    <td><code
+                                            style="background:#e0e7ff;color:#3730a3;padding:2px 6px;border-radius:4px;font-size:.8rem;">{{ $item->kode_rekening ?: '-' }}</code>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:500;">{{ $item->uraian }}</div>
+                                        @if ($item->kategori)
+                                            <div style="font-size:.75rem;color:#64748b;">{{ $item->kategori }}</div>
+                                        @endif
+                                    </td>
+                                    <td style="font-weight:600;color:#dc2626;">Rp
+                                        {{ number_format($item->anggaran, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format($item->realisasi, 0, ',', '.') }}</td>
+                                    <td>
+                                        <div class="progress-slim mb-1">
+                                            <div class="progress-slim-bar"
+                                                style="width:{{ min($item->persentase_realisasi, 100) }}%;background:#dc2626;">
+                                            </div>
+                                        </div>
+                                        <span
+                                            style="font-size:.75rem;color:#64748b;">{{ $item->persentase_realisasi }}%</span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data belanja</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Pembiayaan --}}
+                <div class="apbdes-section">
+                    <div class="apbdes-section-header" style="background:#eff6ff;">
+                        <h5 style="color:#2563eb;"><i class="bi bi-arrow-left-right"></i> Pembiayaan</h5>
+                        <span style="color:#2563eb;font-weight:700;">Rp
+                            {{ number_format($apbdes->total_pembiayaan, 0, ',', '.') }}</span>
+                    </div>
+                    <table class="apbdes-table">
+                        <thead>
+                            <tr>
+                                <th style="width:120px;">Kode</th>
+                                <th>Uraian</th>
+                                <th style="width:180px;">Anggaran</th>
+                                <th style="width:180px;">Realisasi</th>
+                                <th style="width:100px;">Capaian</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($apbdes->pembiayaan as $item)
+                                <tr>
+                                    <td><code
+                                            style="background:#e0e7ff;color:#3730a3;padding:2px 6px;border-radius:4px;font-size:.8rem;">{{ $item->kode_rekening ?: '-' }}</code>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:500;">{{ $item->uraian }}</div>
+                                        @if ($item->kategori)
+                                            <div style="font-size:.75rem;color:#64748b;">{{ $item->kategori }}</div>
+                                        @endif
+                                    </td>
+                                    <td style="font-weight:600;color:#2563eb;">Rp
+                                        {{ number_format($item->anggaran, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format($item->realisasi, 0, ',', '.') }}</td>
+                                    <td>
+                                        <div class="progress-slim mb-1">
+                                            <div class="progress-slim-bar"
+                                                style="width:{{ min($item->persentase_realisasi, 100) }}%;background:#2563eb;">
+                                            </div>
+                                        </div>
+                                        <span
+                                            style="font-size:.75rem;color:#64748b;">{{ $item->persentase_realisasi }}%</span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Belum ada data pembiayaan</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Disclaimer --}}
+                <div class="p-4 rounded-3" style="background:#fffbeb;border:1px solid #fcd34d;">
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-info-circle" style="color:#d97706;font-size:1.5rem;"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="color:#92400e;">Catatan</h6>
+                            <p class="mb-0 small" style="color:#78350f;">
+                                Data APBDes ini merupakan ringkasan anggaran dan realisasi yang dikelola oleh Pemerintah
+                                Desa {{ config('sid.nama_desa') }}.
+                                Untuk informasi lebih detail, silakan datang ke Kantor Desa atau hubungi perangkat desa
+                                setempat.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-    </section>
+        </section>
+    @else
+        {{-- Empty State --}}
+        <section class="sid-section sid-section-putih">
+            <div class="container">
+                <div class="text-center py-5">
+                    <div style="font-size:4rem;color:#cbd5e1;margin-bottom:1rem;">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <h4 class="fw-bold text-muted">Data APBDes Tidak Tersedia</h4>
+                    <p class="text-muted">Data APBDes untuk tahun {{ $tahun }} belum dipublikasikan atau masih
+                        dalam proses penyusunan.</p>
+                    @if ($tahunList->count() > 0)
+                        <p class="text-muted">Silakan pilih tahun lain yang tersedia.</p>
+                    @endif
+                </div>
+            </div>
+        </section>
+    @endif
 
 @endsection

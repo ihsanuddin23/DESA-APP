@@ -263,4 +263,144 @@
         border-radius: .3rem;
         font-size: .8rem;
     }
+
+    /* ============================================
+   PAGINATION - SIMPLE MODERN
+   ============================================ */
+
+    .pagination-simple {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    /* Info Text */
+    .ps-info {
+        font-size: 0.82rem;
+        color: #64748b;
+    }
+
+    .ps-info strong {
+        color: #1a56db;
+        font-weight: 600;
+    }
+
+    /* Controls Container */
+    .ps-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Prev/Next Buttons */
+    .ps-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 0.9rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        background: #fff;
+        color: #475569;
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .ps-btn:hover:not(.ps-btn-disabled) {
+        border-color: #1a56db;
+        color: #1a56db;
+        background: #eff6ff;
+    }
+
+    .ps-btn-disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: #f8fafc;
+    }
+
+    /* Page Numbers */
+    .ps-pages {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+        margin: 0 0.25rem;
+    }
+
+    .ps-page {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.25rem;
+        height: 2.25rem;
+        padding: 0 0.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        cursor: pointer;
+    }
+
+    .ps-page:hover:not(.ps-page-active) {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .ps-page-active {
+        background: #1a56db;
+        color: #fff;
+        font-weight: 600;
+        cursor: default;
+    }
+
+    /* Gap (ellipsis) */
+    .ps-gap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.25rem;
+        color: #cbd5e1;
+        font-size: 0.85rem;
+        user-select: none;
+    }
+
+    /* Mobile: hide page numbers, keep prev/next + info */
+    @media (max-width: 640px) {
+        .pagination-simple {
+            justify-content: center;
+        }
+
+        .ps-info {
+            width: 100%;
+            text-align: center;
+            order: -1;
+        }
+
+        .ps-pages {
+            display: none;
+        }
+
+        .ps-btn span {
+            display: none;
+        }
+
+        .ps-btn {
+            padding: 0.5rem;
+        }
+    }
+
+    /* Tablet: show page numbers */
+    @media (min-width: 641px) {
+        .ps-btn span {
+            display: inline;
+        }
+    }
 </style>

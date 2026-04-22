@@ -106,6 +106,13 @@
                             'deskripsi' => 'Sampaikan keluhan & aspirasi',
                             'route' => 'aduan',
                         ],
+                        [
+                            'ikon' => 'bi-calendar-event-fill',
+                            'warna' => '#E8F4FD',
+                            'judul' => 'Agenda Kegiatan',
+                            'deskripsi' => 'Jadwal kegiatan desa',
+                            'route' => 'agenda',
+                        ],
                     ];
                 @endphp
 
@@ -339,6 +346,58 @@
             </div>
         </div>
     </section>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════ --}}
+    {{-- SECTION: Agenda Mendatang --}}
+    {{-- ═══════════════════════════════════════════════════════════════════════ --}}
+    @if ($agendaMendatang->count() > 0)
+        <section class="sid-section sid-section-putih">
+            <div class="container">
+                <div class="sid-section-header">
+                    <div>
+                        <h2 class="sid-section-title">Agenda Kegiatan</h2>
+                        <p class="sid-section-sub">Kegiatan dan acara yang akan datang</p>
+                    </div>
+                    <a href="{{ route('agenda') }}" class="sid-link-more">
+                        Lihat Semua <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="row g-4">
+                    @foreach ($agendaMendatang as $agenda)
+                        <div class="col-md-6 col-lg-4">
+                            <div class="sid-agenda-card">
+                                <div class="sid-agenda-date">
+                                    <span class="day">{{ $agenda->tanggal_mulai->format('d') }}</span>
+                                    <span class="month">{{ $agenda->tanggal_mulai->translatedFormat('M') }}</span>
+                                </div>
+                                <div class="sid-agenda-content">
+                                    <span class="sid-agenda-kategori"
+                                        style="background:{{ $agenda->kategori_bg }};color:{{ $agenda->kategori_color }};">
+                                        {{ $agenda->kategori_label }}
+                                    </span>
+                                    <h5 class="sid-agenda-title">
+                                        <a
+                                            href="{{ route('agenda.detail', $agenda) }}">{{ Str::limit($agenda->judul, 50) }}</a>
+                                    </h5>
+                                    <div class="sid-agenda-meta">
+                                        @if ($agenda->waktu_mulai)
+                                            <span><i class="bi bi-clock"></i>
+                                                {{ \Carbon\Carbon::parse($agenda->waktu_mulai)->format('H:i') }} WIB</span>
+                                        @endif
+                                        @if ($agenda->lokasi)
+                                            <span><i class="bi bi-geo-alt"></i>
+                                                {{ Str::limit($agenda->lokasi, 20) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 
     {{-- ── STRUKTUR PEMERINTAHAN ────────────────────────────────────────────────── --}}
     @if ($strukturDesa->count())

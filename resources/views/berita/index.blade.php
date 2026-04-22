@@ -109,7 +109,7 @@
                 {{-- Pagination --}}
                 @if ($beritaList->hasPages())
                     <div class="d-flex justify-content-center mt-5">
-                        {{ $beritaList->links() }}
+                        {{ $beritaList->links('vendor.pagination.custom') }}
                     </div>
                 @endif
             @else

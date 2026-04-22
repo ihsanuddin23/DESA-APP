@@ -376,7 +376,7 @@
                 style="padding:.85rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
                 <span style="font-size:.78rem;color:#94a3b8;">Menampilkan
                     {{ $penduduk->firstItem() }}–{{ $penduduk->lastItem() }} dari {{ $penduduk->total() }}</span>
-                {{ $penduduk->links() }}
+                {{ $penduduk->links('vendor.pagination.custom') }}
             </div>
         @endif
     </div>
